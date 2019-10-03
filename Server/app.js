@@ -1,7 +1,7 @@
 if(process.env.NODE_ENV==='development'){
     require('dotenv').config()
 }
-
+const userRouter = require('./Routes/userRouter')
 const cors = require('cors');
 const express = require('express');
 const app = express();
@@ -33,7 +33,7 @@ app.use(cors())
 
 
 
-
+app.use('/users',userRouter)
 
 app.listen(PORT,() => console.log(`Server Running on ${PORT}`))
 
