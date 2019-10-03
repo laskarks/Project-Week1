@@ -1,5 +1,6 @@
 const User = require ('../Models/user');
 const hashPassword = require('../helpers/hashPassword');
+const { generateToken } = require('../helpers/jwt')
 
 class UserController {
 
@@ -17,6 +18,43 @@ class UserController {
             res.status(500).json(err)
         })
 
+    };
+
+    static readAll (req,res) {
+        User.find({})
+        .then(function(Users) {
+            res.status(200).json(Users)
+        })
+        .catch(function(err) {
+            res.status(500).json(err)
+        }) 
+    };  
+    // Adventure.findOne({ type: 'iphone' }, function (err, adventure) {});
+    static signIn (req,res) {
+        const {username, password} = req.body
+        User.findOne({username: username})
+            .then (function (user) {
+                
+                if (user) {
+                    if (hashPassword.check(password,user.password)) {
+                        let payload = {
+                            id: user.id
+                        }
+                        let token = generateToken(payload)
+                        req.headers.token = token;
+                        res.status(200).json(token)
+                    }else {
+                        res.status(400).json(
+                            {message: "Invalid Username / Password"}
+                        )
+                    }
+                }else {
+                    res.status(404).json('username not found')
+                }
+            })
+            .catch(function (err) {
+                res.status(500).json(err)
+            })
     };
 
 
