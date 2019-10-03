@@ -7,6 +7,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const morgan = require('morgan')
+const route = require('./routes/index')
     //Moongo connection
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/group-project1', { useNewUrlParser: true });
@@ -21,6 +22,9 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json())
+
+app.use('/', route)
+
 
 //Your Code add below this----
 
