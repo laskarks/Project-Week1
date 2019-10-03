@@ -1,12 +1,11 @@
 const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI(process.env.NEWS_API_KEY);
-const dateFormat = require('../helpers/dateFormat')
 
 
 class NewsController {
     static getTopHeadlines(req, res, next) {
         const { q, language, country, category } = req.query
-        let objParams = {}
+        let objParams = { sortBy: 'popularity' }
 
         if (q) objParams.q = q
         if (language) objParams.language = language
@@ -21,6 +20,7 @@ class NewsController {
     }
 
     static getLatestNews(req, res, next) {
+        // q is required here
         const { q, language, country, category } = req.query
 
         let objParams = { sortBy: 'publishedAt' }
