@@ -6,9 +6,9 @@
         <meta name="google-signin-client_id" content="892845584166-gl7d7hdkqkrr49o5cnfnd7s35dsgjti5.apps.googleusercontent.com">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" href="style.css">
         <script src="https://apis.google.com/js/platform.js" async defer></script>
-        <title>HacktivGit</title>
+        <title>News</title>
     </head>
 
     <body>
@@ -17,36 +17,61 @@
                 <a class="navbar-brand" href="#"><h2>News</h2></a>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                            <a class="nav-link" href="#"><div class ="btn btn-danger" id="signout" onclick="method();">Sign Out</div></a>    
+                            <a class="nav-link" href="#"><div class ="btn btn-danger" id="signout" onclick="">Sign Out</div></a>    
                     </li>
                 </ul>
             </div>
         </nav>
 
-        <div id="login">
-            <div class="d-flex flex-nowrap border border-dark" >
-                <div class="order-1 p-2 border border-success">    
-                    <h4>Menu</h4>
-                    <input type="text" placeholder="Keywords" id="news"> <br> <br>
-                    <button class="btn btn-success" onclick="method()">Submit</button> <br><br>
+        <div class="container" id="mainPage">
+                <div class="row">
+                  <div class="col-sm border border-dark" >
+                        <br><h4>Search News</h4><br>
+                        <input type="text" placeholder="Keywords" id="q"> <br> <br>
+                        <button class="btn btn-success" onclick="getTopHeadlines()">Submit</button> <br><br>
 
-                    <button class="btn btn-outline-dark btn-lg" onclick="method()">Top Headlines</button> <br><br>
-                  <br><br>
-
+                        <br><h4>Currency</h4><br>
+                        <input type="text" placeholder="Currency" id="currency_value"> <br> <br>
+                        <button class="btn btn-success" onclick="">Submit</button>
+                  </div>
+                  <div class="col-sm border border-dark">
+                        <br><h4>News</h4><br>
+                        <div id="latest"></div>
+                        <div id="headlines"></div>
+                        <div id="news"></div>
+                  </div>
+                  <div class="col-sm border border-dark">
+                        <br><h4>Forex</h4><br>
+                        <input type="text" placeholder="Enter currency" id="currency"> <br> <br>
+                        <button class="btn btn-success" onclick="getForex()">Submit</button> <br><br>
+                        <div id="forex">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                    <th scope="col">Currency</th>
+                                    <th scope="col">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="forex_data">      
+                                </tbody>
+                            </table>
+                        </div>
+                  </div>
                 </div>
-                <div class="order-2 p-2">
-                    <h4>News</h4>
-                    <div id="headlines"></div>
-                    <div id="news"></div>
-                </div>
+              </div>
+               
 
                 <div>
-                    <div id="market"></div>
+                    
                     <div id="currency"></div>
                 </div>
               </div> <br>
             </div>
-
+        
+            <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
         <script src="./main.js"></script>
     </body>
 </html>

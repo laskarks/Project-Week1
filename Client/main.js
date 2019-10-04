@@ -1,17 +1,65 @@
 $(document).ready(() => {
+    getLatest()
+    $('#forex').hide()
 
 })
 
-function getTopHeadlines() {
-    $('#top-headlines').empty()
+const config = {
+    host: 'http://localhost:3000'
+}
+
+function getLatest() {
+    $('#latest').empty()
+    const value = $('#q').val()
     $.ajax({
         method: 'GET',
-        url: ``
+        url: `${config.host}/news/latest?q=${value}`
+  
+    })
+    .done((latest) => {
+        console.log(latest.articles[0])
+        for (let i = 0; i < latest.articles.length; i++) {
+            let article = latest.articles[i]
+            $('#headlines').append(`
+            <div class="card" style="width: 27rem;">
+                <img src="${article.urlToImage}" class="card-img-top" alt="...">
+
+                <div class="card-body">
+                <h5 class="card-title">${article.title}</h5>
+                <p class="card-text">${article.description}</p>
+                <a href="${article.url}" target="_blank" class="btn btn-primary">Read More</a>
+                </div>
+            </div>`)
+        }
+    })
+    .fail(err => {
+        console.log(err)
+    })
+
+}
+
+function getTopHeadlines() {
+    $('#headlines').empty()
+    const value = $('#q').val()
+    $.ajax({
+        method: 'GET',
+        url: `${config.host}/news/top?q=${value}`
+  
     })
     .done((top_headlines) => {
-        console.log(top_headlines[0])
-        for (let i = 0; i < top_headlines.length; i++) {
-            $('#headlines').append(``)
+        console.log(top_headlines.articles[0])
+        for (let i = 0; i < top_headlines.articles.length; i++) {
+            let article = top_headlines.articles[i]
+            $('#headlines').append(`
+            <div class="card" style="width: 27rem;">
+                <img src="${article.urlToImage}" class="card-img-top" alt="...">
+
+                <div class="card-body">
+                <h5 class="card-title">${article.title}</h5>
+                <p class="card-text">${article.description}</p>
+                <a href="${article.url}" target="_blank" class="btn btn-primary">Read More</a>
+                </div>
+            </div>`)
         }
     })
     .fail(err => {
@@ -19,33 +67,27 @@ function getTopHeadlines() {
     })
 }
 
-function searchNews() {
-    $('#news').empty()
-    const news = $('#news').val()
-    $.ajax({
-        method: 'GET',
-        url: ``
-    })
-    .done((searched_news) => {
-        for (let i = 0; i < searched_news.items.length; i++) {
-            $('#news').append(``)
-        }
-    })
-    .fail(err => {
-        console.log(err)
-    })
-}
+function getForex() {
+    const value = $('#currency').val()
 
-function getMarket() {
     $.ajax({
         method: 'GET',
-        url: ``
+        url: `${config.host}/forex?base=${value}`
     })
-    .done((market) => {
-        console.log(market[0])
-        for (let i = 0; i < market.length; i++) {
-            $('#market').append(``)
+    .done((forex) => {
+        // console.log(forex)
+        $('#forex').show()
+        for(let key in forex){
+            // console.log(key, forex[key])
+            $('#forex_data').append(`
+            <tr>
+                <th>${key}</th>
+                <th>${forex[key]}</th>
+            </tr>
+          
+         `)
         }
+      
     })
     .fail(err => {
         console.log(err)
