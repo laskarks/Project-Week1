@@ -29,7 +29,7 @@ class UserController {
             res.status(500).json(err)
         }) 
     };  
-    // Adventure.findOne({ type: 'iphone' }, function (err, adventure) {});
+    
     static login (req,res) {
         const {username, password} = req.body
         User.findOne({username: username})
