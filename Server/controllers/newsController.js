@@ -21,12 +21,10 @@ class NewsController {
 
     static getLatestNews(req, res, next) {
         // q is required here
-        const { q, language, country, category } = req.query
+        const { q, country, category } = req.query
+        let objParams = { sortBy: 'publishedAt', language: 'en' }
+        if (q) {objParams.q = q} else { objParams.q = 'general'}
 
-        let objParams = { sortBy: 'publishedAt' }
-
-        if (q) objParams.q = q
-        if (language) objParams.language = language
         if (country) objParams.country = country
         if (category) objParams.category = category
 
