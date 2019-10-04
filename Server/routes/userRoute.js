@@ -1,8 +1,6 @@
-const route = require('express').Router()
+const router = require('express').Router()
+const userController = require('../controllers/userController')
 
+router.use('/gsignin', userController.googleLogin)
 
-
-
-
-
-module.exports = route
+module.exports = router
