@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+   
+<body>
+
+<h2>HTML Forms</h2>
+
+<form method="POST" onsubmit="register();">
+        Name:<br>
+        <input type="text" name="name" id="name">
+        <br>
+  UserName:<br>
+  <input type="text" name="username" id="username">
+  <br>
+  Password:<br>
+  <input type="password" name="lastname" id="password">
+  <br><br>
+  <input type="submit" value="Submit">
+</form> 
+
+<p>If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php".</p>
+
+<br>
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
+<br>
+<a href="#" onclick="signOut();">Sign out</a>
+
+
+
+
+    <script>
+        
+    function register() {
+    event.preventDefault()
+    const name = $('#name').val()
+    const username = $('#username').val()
+    const password = $('#password').val()
+    
+    $.ajax({
+            url: 'http://localhost:3001/users/',
+            method: 'POST',
+            data: { name, username, password }
+        })
+        .done(response => {
+            $('#name').val('');
+            $('#username').val('');
+            $('#password').val('');
+            alert('You Successfully Register')
+        })
+        .fail((jqXHR, textstatus) => {
+            console.log('fail', textstatus)
+        })
+    };
+
+    
+
+
+
+
+
+
+
+
+    </script>
+
+</body>
+</html>

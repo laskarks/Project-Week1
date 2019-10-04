@@ -30,7 +30,7 @@ class UserController {
         }) 
     };  
     // Adventure.findOne({ type: 'iphone' }, function (err, adventure) {});
-    static signIn (req,res) {
+    static login (req,res) {
         const {username, password} = req.body
         User.findOne({username: username})
             .then (function (user) {

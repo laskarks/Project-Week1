@@ -2,12 +2,14 @@ if (process.env.NODE_ENV === 'development') {
     require('dotenv').config()
 }
 const userRouter = require('./Routes/userRouter')
+const stockRouter = require('./Routes/stockMarketRouter')
 const cors = require('cors');
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const morgan = require('morgan')
-    //Moongo connection
+
+//Moongo connection
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/group-project1', { useNewUrlParser: true });
 
@@ -32,7 +34,7 @@ app.use(express.json())
 
 
 
-
+app.use('/stocks',stockRouter)
 app.use('/users',userRouter)
 
 app.listen(PORT, () => console.log(`Server Running on ${PORT}`))
