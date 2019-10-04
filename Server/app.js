@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 const morgan = require('morgan')
 const route = require('./routes/index')
 const errorHandler = require('./middlewares/errorHandler')
-    //Moongo connection
+//Moongo connection
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/group-project1', { useNewUrlParser: true });
 
@@ -31,10 +31,6 @@ app.use('/', route)
 
 
 //Your Code add below this----
-
-
-
-
 app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`Server Running on ${PORT}`))

@@ -1,7 +1,9 @@
 $(document).ready(() => {
     getLatest()
-    $('#forex').hide()
-
+    getForexHome()
+    $('#mainPage').hide()
+    $('#signout').hide()
+    getMarket()
 })
 
 const config = {
@@ -23,13 +25,17 @@ function getLatest() {
             $('#headlines').append(`
             <div class="card" style="width: 27rem;">
                 <img src="${article.urlToImage}" class="card-img-top" alt="...">
-
                 <div class="card-body">
-                <h5 class="card-title">${article.title}</h5>
-                <p class="card-text">${article.description}</p>
-                <a href="${article.url}" target="_blank" class="btn btn-primary">Read More</a>
+                <a href="${article.url}" target="_blank" class="card-title"><h5>${article.title}</h5></a>
+                    <p class="card-text">${article.description}</p>
                 </div>
-            </div>`)
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">${ new Date(article.publishedAt).toDateString()}</li>
+                </ul>
+                <div class="card-body">
+                    <a href="${article.url}" target="_blank" class="btn btn-primary">Read More</a>
+                </div>
+            </div> <br>`)
         }
     })
     .fail(err => {
@@ -47,17 +53,24 @@ function getTopHeadlines() {
   
     })
     .done((top_headlines) => {
-        console.log(top_headlines.articles[0])
+        // console.log(top_headlines.articles[0])
         for (let i = 0; i < top_headlines.articles.length; i++) {
             let article = top_headlines.articles[i]
             $('#headlines').append(`
+           
             <div class="card" style="width: 27rem;">
                 <img src="${article.urlToImage}" class="card-img-top" alt="...">
-
                 <div class="card-body">
-                <h5 class="card-title">${article.title}</h5>
-                <p class="card-text">${article.description}</p>
-                <a href="${article.url}" target="_blank" class="btn btn-primary">Read More</a>
+                    <a href="${article.url}" target="_blank" class="card-title"><h5>${article.title}</h5></a>
+                    <p class="card-text">${article.description}</p>
+                    <p class="card-text">${article.description}</p>
+
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">${ new Date(article.publishedAt).toISOString()}</li>
+                </ul>
+                <div class="card-body">
+                    <a href="${article.url}" target="_blank" class="btn btn-primary">Read More</a>
                 </div>
             </div>`)
         }
@@ -67,7 +80,32 @@ function getTopHeadlines() {
     })
 }
 
+function getForexHome() {
+    $.ajax({
+        method: 'GET',
+        url: `${config.host}/forex?base=USD`
+    })
+    .done((forex) => {
+        $('#forex').hide()
+        for(let key in forex){
+            // console.log(key, forex[key])
+            $('#forexHome_data').append(`
+            <tr>
+                <th>${key}</th>
+                <th>${forex[key]}</th>
+            </tr>
+          
+         `)
+        }
+      
+    })
+    .fail(err => {
+        console.log(err)
+    })
+}
+
 function getForex() {
+    $('#forexHome').empty()
     const value = $('#currency').val()
 
     $.ajax({
@@ -87,6 +125,7 @@ function getForex() {
           
          `)
         }
+        
       
     })
     .fail(err => {
@@ -94,21 +133,67 @@ function getForex() {
     })
 }
 
-function getCurrency() {
+function onSignIn(googleUser) {
+    const config = {
+      host: 'http://localhost:3000'
+    }
+    const googleToken = googleUser.getAuthResponse().id_token;
+
     $.ajax({
-        method: 'GET',
-        url: ``
+      method: 'POST', 
+      url: `${config.host}/users/gsignin`,
+      data: {
+        id_token: googleToken
+      }
     })
-    .done((currency) => {
-        console.log(currency[0])
-        for (let i = 0; i < currency.length; i++) {
-            $('#currency').append(``)
-        }
+    .done(token => {
+      $('#mainPage').show()
+      $('#signout').show()
+      $('#gsignin').hide()
+      localStorage.setItem('token', token)
     })
     .fail(err => {
-        console.log(err)
+      console.log(err)
     })
+  }
+
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        $('#mainPage').hide()
+        $('#gsignin').show()
+        $('#signout').hide()
+        localStorage.removeItem('token')
+        console.log('User signed out.');
+    });
+  }
+
+  
+
+function getMarket() {
+    $.ajax({
+        method: 'GET',
+        url: `${config.host}/stocks`
+    })
+        .done((market) => {
+        
+            const stocks = market.majorIndexesList
+            // console.log(stocks[0])
+            for (let i = 0; i < stocks.length; i++) {
+                $('#market').append(`
+                <tr>
+                    <td> ${stocks[i].ticker}</td>
+                    <td> ${stocks[i].changes}</td>
+                    <td> ${stocks[i].price}</td>
+                </tr>
+                `)
+            }
+        })
+        .fail(err => {
+            console.log(err)
+        })
 }
+
 
 
 
