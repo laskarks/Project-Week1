@@ -1,7 +1,8 @@
 if (process.env.NODE_ENV === 'development') {
     require('dotenv').config()
 }
-
+const userRouter = require('./Routes/userRouter')
+const stockRouter = require('./Routes/stockMarketRouter')
 const cors = require('cors');
 const express = require('express');
 const app = express();
@@ -30,8 +31,8 @@ app.use('/', route)
 //Your Code add below this----
 
 
-
-
+app.use('/stocks',stockRouter)
+app.use('/users',userRouter)
 app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`Server Running on ${PORT}`))
